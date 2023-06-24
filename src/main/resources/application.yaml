@@ -1,0 +1,75 @@
+logging:
+  level:
+    "[com.nael.catalog]": TRACE
+
+# jadi semua kelas yang ada di dalam com.nael.catalog akan dikeluarkan log nya yang berada di level debug
+# TODO: Lanjut ke project lombok
+
+spring:
+  datasource:
+    hikari:
+      connection-timeout: 600000 # berapa lama umur dari objek koneksi
+      idle-timeout: 600000 # berapa lama umur dari koneksi jika nganggur
+      max-lifetime: 1800000 # maksimum umurl objek koneksi
+      maximum-pool-size: 10 # jumlah objek koneksi di dalam pool connection
+    url: jdbc:postgresql://127.0.0.1/book_catalog
+    username: nael
+    password: Nael0813
+
+  jpa:
+    database: postgresql
+    # hibernate ddl auto: konfigurasi: memungkinkan programmer untuk melakukan inisialisasi terhadap database.
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 100 # menentukan jumlah batch yang akan diinsert
+        order_insert: true
+    show-sql: true
+    #TODO: Lanjut untuk batch insert
+app:
+  currency: IDR
+  timezone: Asia/Jakarta
+  welcome-text: Hello Nael dari application.yaml
+
+cloud:
+  api-key: ${CLOUD_KEY}
+
+server:
+  port: 8080
+
+# FIXME: error, port already in use
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - development
+
+server:
+  port: 8003
+
+app:
+  welcome-text: Hello dari Nael development
+
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - production
+
+server:
+  port: 8083
+
+---
+spring:
+  config:
+    activate:
+      on-profile:
+        - test
+
+server:
+  port: 80
